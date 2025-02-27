@@ -216,3 +216,53 @@ export async function fetchFilteredCustomers(query: string) {
     throw new Error('Failed to fetch customer table.');
   }
 }
+
+
+// Using SQL
+// For your dashboard application, you'll write database queries using the postgres.js library and SQL. There are a few reasons why we'll be using SQL:
+
+// SQL is the industry standard for querying relational databases (e.g. ORMs generate SQL under the hood).
+// Having a basic understanding of SQL can help you understand the fundamentals of relational databases, allowing you to apply your knowledge to other tools.
+// SQL is versatile, allowing you to fetch and manipulate specific data.
+// The postgres.js library provides protection against SQL injections.
+// Don't worry if you haven't used SQL before - we have provided the queries for you.
+
+// Go to /app/lib/data.ts. Here you'll see that we're using postgres. The sql function allows you to query your database:
+
+
+// Here, you've added an artificial 3-second delay to simulate a slow data fetch. The result is that now your whole page is blocked from showing UI to the visitor while the data is being fetched. Which brings us to a common challenge developers have to solve:
+
+// With dynamic rendering, your application is only as fast as your slowest data fetch.
+
+// What is streaming?
+// Streaming is a data transfer technique that allows you to break down a route into smaller "chunks" and progressively stream them from the server to the client as they become ready.
+
+// Streaming works well with React's component model, as each component can be considered a chunk.
+
+// There are two ways you implement streaming in Next.js:
+
+// At the page level, with the loading.tsx file (which creates <Suspense> for you).
+// At the component level, with <Suspense> for more granular control.
+// Let's see how this works.
+
+
+
+// Refresh the page, and you should see all the cards load in at the same time. You can use this pattern when you want multiple components to load in at the same time.
+
+// Deciding where to place your Suspense boundaries
+// Where you place your Suspense boundaries will depend on a few things:
+
+// How you want the user to experience the page as it streams.
+// What content you want to prioritize.
+// If the components rely on data fetching.
+// Take a look at your dashboard page, is there anything you would've done differently?
+
+// Don't worry. There isn't a right answer.
+
+// You could stream the whole page like we did with loading.tsx... but that may lead to a longer loading time if one of the components has a slow data fetch.
+// You could stream every component individually... but that may lead to UI popping into the screen as it becomes ready.
+// You could also create a staggered effect by streaming page sections. But you'll need to create wrapper components.
+// Where you place your suspense boundaries will vary depending on your application. In general, it's good practice to move your data fetches down to the components that need it, and then wrap those components in Suspense. But there is nothing wrong with streaming the sections or the whole page if that's what your application needs.
+
+// Don't be afraid to experiment with Suspense and see what works best, it's a powerful API that can help you create more delightful user experiences.
+
